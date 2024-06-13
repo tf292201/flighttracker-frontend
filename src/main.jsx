@@ -1,13 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { BrowserRouter } from 'react-router-dom'
-import App from './App.jsx'
-import './index.css'
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App.jsx';
+import './index.css';
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+const rootElement = document.getElementById('root');
+
+// Render the React app using ReactDOM.render (legacy approach)
+ReactDOM.render(
   <React.StrictMode>
-     <BrowserRouter> {/* Wrap your App component with BrowserRouter */}
-      <App />
+    <BrowserRouter>
+      <App /> {/* Render the App component */}
     </BrowserRouter>
   </React.StrictMode>,
-)
+  rootElement
+);
