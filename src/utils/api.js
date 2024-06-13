@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:3001'; // Set your base URL here
+const BASE_URL = 'https://flighttracker-backend-6aec.onrender.com'; // Set your base URL here
 
 //change to https://flighttracker-backend-6aec.onrender.com for deployment
 
