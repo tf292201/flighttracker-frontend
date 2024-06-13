@@ -1,0 +1,93 @@
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
+import ApiHelper from '../utils/api';
+
+const UserProfile = () => {
+  const { id } = useParams(); // Extract the user ID from the route parameter
+
+  const [userData, setUserData] = useState(null); // State to store user data
+
+  const [flights, setFlights] = useState(null); // State to store aircraft data
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const data = await ApiHelper.getUserDataAndFlights(id, token);
+        setUserData(data.user); // Update the state with the fetched user data
+        setFlights(data.flights); // Update the state with the fetched flights data
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+  
+    fetchData();
+  }, [id]); // Include 'id' in the dependency array to re-fetch data when the user ID changes
+  
+
+  return (
+    <div>
+      <Box sx={{ paddingTop: '50px' }}>
+      <TableContainer component={Paper} sx={{ overflowX: 'auto', backgroundColor: 'rgba(255, 255, 255, 0.4)', fontFamily: 'Roboto' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Username</TableCell>
+              <TableCell>Email</TableCell>
+              {/* Add more table headers as needed */}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {userData && (
+              <TableRow>
+                <TableCell>{userData.username}</TableCell> {/* Render user's name */}
+                <TableCell>{userData.email}</TableCell> {/* Render user's email */}
+                {/* Render more user data as needed */}
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      </Box>
+      <Box sx={{ paddingTop: '20px' }}>
+      <TableContainer component={Paper} sx={{ overflowX: 'auto', backgroundColor: 'rgba(255, 255, 255, 0.4)' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Flight Callsign</TableCell>
+              <TableCell>Origin Country</TableCell>
+              <TableCell>Manufacturer Name</TableCell>
+              <TableCell>Manufacturer Year</TableCell>
+              <TableCell>Model Number</TableCell>
+              <TableCell>Registration Name</TableCell>
+              <TableCell>Tail Number</TableCell>
+              <TableCell>Photographer</TableCell>
+              <TableCell>Image</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {flights && flights.map((flight) => (
+              <TableRow key={flight.id}>
+                <TableCell>{flight.callsign}</TableCell> {/* Render flight callsign */}
+                <TableCell>{flight.origin_country}</TableCell> {/* Render origin country */}
+                <TableCell>{flight.man_name}</TableCell> {/* Render manufacturer name */}
+                <TableCell>{flight.man_year}</TableCell> {/* Render manufacturer year */}
+                <TableCell>{flight.model_num}</TableCell> {/* Render model number */}
+                <TableCell>{flight.reg_name}</TableCell> {/* Render registration name */}
+                <TableCell>{flight.tail_num}</TableCell> {/* Render tail number */}
+                <TableCell>{flight.photographer}</TableCell> {/* Render photographer */}
+                <TableCell>
+                  <img src={flight.thumbnail_src} alt="Aircraft Thumbnail N/A" style={{ width: '100px' }} />
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      </Box>
+    </div>
+  );};
+  
+
+export default UserProfile;

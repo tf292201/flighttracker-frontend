@@ -1,0 +1,10 @@
+
+  
+  .navbar {
+    background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent black */
+  }
+  
+  .navbar .MuiToolbar-root {
+    background: rgba(0, 0, 0, 0.2); /* Apply transparency to the toolbar */
+  }
+  
