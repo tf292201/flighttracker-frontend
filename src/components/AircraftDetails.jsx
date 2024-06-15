@@ -118,7 +118,7 @@ function AircraftDetails({ icao24, onClose }) {
         <CardMedia
           component="img"
           src={aircraftDetails.combinedResult.thumbnailSrc}
-          alt="Aircraft Image"
+          alt="Aircraft Image Not Available"
           className="card-media"
         />
       </div>
