@@ -88,7 +88,7 @@ const ApiHelper = {
 
   delete: async (callsign, token) => {
     try {
-      await axios.delete(`${BASE_URL}/aircraft/delete`, {
+      await axios.post(`${BASE_URL}/aircraft/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         },
