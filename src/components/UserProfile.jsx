@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Box, Button } from '@mui/material';
 import ApiHelper from '../utils/api';
+import sunglasses from '../assets/sunglasses.png';
 
 const UserProfile = () => {
   const { id } = useParams(); // Extract the user ID from the route parameter
@@ -25,6 +26,18 @@ const UserProfile = () => {
     fetchData();
   }, [id]); // Include 'id' in the dependency array to re-fetch data when the user ID changes
   
+
+  const handleDelete = async (callsign) => {
+    try {
+      const token = localStorage.getItem('token');
+      await ApiHelper.delete(callsign, token);
+      // Update the flights state to remove the deleted flight
+      setFlights(flights.filter(flight => flight.callsign !== callsign));
+    } catch (error) {
+      console.error('Error deleting flight:', error);
+    }
+  };
+
 
   return (
     <div>
@@ -78,8 +91,21 @@ const UserProfile = () => {
                 <TableCell>{flight.tail_num}</TableCell> {/* Render tail number */}
                 <TableCell>{flight.photographer}</TableCell> {/* Render photographer */}
                 <TableCell>
-                  <img src={flight.thumbnail_src} alt="Aircraft Thumbnail N/A" style={{ width: '100px' }} />
+                <img 
+    src={flight.thumbnail_src || sunglasses} 
+    alt="Aircraft Thumbnail N/A" 
+    style={{ width: '100px' }} 
+  />
                 </TableCell>
+                <TableCell>
+                    <Button 
+                      variant="contained" 
+                      color="secondary" 
+                      onClick={() => handleDelete(flight.callsign)}
+                    >
+                      Delete
+                    </Button>
+                  </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -7,6 +7,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import ApiHelper from '../utils/api';
 import './AircraftDetails.css';
+import sunglasses from '../assets/sunglasses.png';
 
 
 function AircraftDetails({ icao24, onClose }) {
@@ -117,7 +118,7 @@ function AircraftDetails({ icao24, onClose }) {
         </CardContent>
         <CardMedia
           component="img"
-          src={aircraftDetails.combinedResult.thumbnailSrc}
+          src={aircraftDetails.combinedResult.thumbnailSrc ? aircraftDetails.combinedResult.thumbnailSrc : sunglasses}
           alt="Aircraft Image Not Available"
           className="card-media"
         />

@@ -84,9 +84,21 @@ const ApiHelper = {
       console.error('Error sending POST request:', error);
       throw new Error('Failed to post spotted aircraft.');
     }
-  }
+  },
 
-
+  delete: async (callsign, token) => {
+    try {
+      await axios.delete(`${BASE_URL}/delete`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        data: {
+          callsign: callsign
+        }
+      });} catch (error) {
+      console.error('Error deleting flight:', error);
+      }
+    }
 };
 
 export default ApiHelper;
