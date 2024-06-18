@@ -95,7 +95,7 @@ const ApiHelper = {
         Authorization: `Bearer ${token}`
       };
   
-      await axios.post(`${BASE_URL}/aircraft/delete`, callsign , { headers });
+      await axios.post(`${BASE_URL}/aircraft/delete`, { callsign } , { headers });
       
       console.log('Flight deleted successfully'); // Optional: Log success message
       
