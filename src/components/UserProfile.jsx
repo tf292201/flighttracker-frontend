@@ -30,7 +30,7 @@ const UserProfile = () => {
   const handleDelete = async (callsign) => {
     try {
       const token = localStorage.getItem('token');
-      await ApiHelper.delete(callsign, token);
+      await ApiHelper.deleteAircraft(callsign, token);
       // Update the flights state to remove the deleted flight
       setFlights(flights.filter(flight => flight.callsign !== callsign));
     } catch (error) {

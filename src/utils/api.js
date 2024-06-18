@@ -86,7 +86,7 @@ const ApiHelper = {
     }
   },
 
-  delete: async (callsign, token) => {
+  deleteAircraft: async (callsign, token) => {
     try {
       console.log(callsign);
       console.log(token);
