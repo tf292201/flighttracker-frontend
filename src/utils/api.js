@@ -87,19 +87,22 @@ const ApiHelper = {
   },
 
   delete: async (callsign, token) => {
-    try {console.log(callsign); 
+    try {
+      console.log(callsign);
       console.log(token);
-      await axios.post(`${BASE_URL}/aircraft/delete`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        data: {
-          callsign: callsign
-        }
-      });} catch (error) {
+      
+      const headers = {
+        Authorization: `Bearer ${token}`
+      };
+  
+      await axios.post(`${BASE_URL}/aircraft/delete`, callsign , { headers });
+      
+      console.log('Flight deleted successfully'); // Optional: Log success message
+      
+    } catch (error) {
       console.error('Error deleting flight:', error);
-      }
     }
+  }
 };
 
 export default ApiHelper;
