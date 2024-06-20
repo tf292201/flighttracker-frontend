@@ -11,27 +11,34 @@ const UserProfile = () => {
 
   const [flights, setFlights] = useState(null); // State to store aircraft data
 
+
+  // Fetch user data and flights data when the component mounts
+  // Use the user ID from the route parameter to fetch the data
+  // Update the state with the fetched data
   useEffect(() => {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem('token');
         const data = await ApiHelper.getUserDataAndFlights(id, token);
-        setUserData(data.user); // Update the state with the fetched user data
-        setFlights(data.flights); // Update the state with the fetched flights data
+        setUserData(data.user);
+        setFlights(data.flights); 
       } catch (error) {
         console.error('Error fetching user data:', error);
       }
     };
   
     fetchData();
-  }, [id]); // Include 'id' in the dependency array to re-fetch data when the user ID changes
+  }, [id]); // Fetch data when the component mounts and when the user ID changes
   
 
+
+  // Function to handle deleting a flight
+  // Make an API request to delete the flight using the callsign
+  // Update the flights state by filtering out the deleted flight
   const handleDelete = async (callsign) => {
     try {
       const token = localStorage.getItem('token');
       await ApiHelper.deleteAircraft(callsign, token);
-      // Update the flights state to remove the deleted flight
       setFlights(flights.filter(flight => flight.callsign !== callsign));
     } catch (error) {
       console.error('Error deleting flight:', error);

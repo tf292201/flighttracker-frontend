@@ -1,5 +1,4 @@
 import React, { useState, useEffect }from 'react';
-import axios from 'axios';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Card from '@mui/material/Card';
@@ -13,6 +12,11 @@ import sunglasses from '../assets/sunglasses.png';
 function AircraftDetails({ icao24, onClose }) {
   const [aircraftDetails, setAircraftDetails] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // Fetch aircraft details when the component mounts
+  // Use the icao24 code to fetch the details
+  // Update the state with the fetched data
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +33,14 @@ function AircraftDetails({ icao24, onClose }) {
 
     fetchData();
   }, [icao24]);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
 
 
   const handleSpotted = async () => {
@@ -113,8 +125,13 @@ function AircraftDetails({ icao24, onClose }) {
           <Typography variant="body1">
             <strong>Velocity(mph):</strong> {velocityInMph}
           </Typography>
+      
+          {isLoggedIn && (
+            <Button onClick={handleSpotted} variant="contained" color="primary">
+              Spotted
+            </Button>
+          )}
 
-          <Button onClick={handleSpotted} variant="contained" color="primary">Spotted</Button>
         </CardContent>
         <CardMedia
           component="img"

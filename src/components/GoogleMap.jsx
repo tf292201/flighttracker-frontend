@@ -1,14 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './GoogleMap.css'; // Import custom CSS styles
-import upIcon from '../assets/up_icon.png'; // Import plane icon image
-import upRightIcon from '../assets/up_right_icon.png'; // Import plane icon image
-import rightIcon from '../assets/right_icon.png'; // Import plane icon image
-import downRightIcon from '../assets/down_right_icon.png'; // Import plane icon image
-import downIcon from '../assets/down_icon.png'; // Import plane icon image
-import downLeftIcon from '../assets/down_left_icon.png'; // Import plane icon image
-import leftIcon from '../assets/left_icon.png'; // Import plane icon image
-import upLeftIcon from '../assets/up_left_icon.png'; // Import plane icon image
-import mapStyle from '../assets/mapStyle'; // Import custom map style
+import './GoogleMap.css'; 
+
+// Import custom map icons
+import upIcon from '../assets/up_icon.png'; 
+import upRightIcon from '../assets/up_right_icon.png'; 
+import rightIcon from '../assets/right_icon.png'; 
+import downRightIcon from '../assets/down_right_icon.png'; 
+import downIcon from '../assets/down_icon.png'; 
+import downLeftIcon from '../assets/down_left_icon.png'; 
+import leftIcon from '../assets/left_icon.png';
+import upLeftIcon from '../assets/up_left_icon.png'; 
+
+// Import custom map style
+import mapStyle from '../assets/mapStyle'; 
 
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
@@ -28,12 +32,11 @@ import AircraftDetails from './AircraftDetails'; // Import AircraftDetails compo
 
 function GoogleMap({ onBoundsChange, aircraftData }) {
   const mapRef = useRef(null);
-  const [initialized, setInitialized] = useState(false); // State to store initial bounds
+  const [initialized, setInitialized] = useState(false); // State to store initialization status
   const [map, setMap] = useState(null); // State to store the map instance
   const [markers, setMarkers] = useState([]); // State to store current markers
-  //
   const [selectedAircraft, setSelectedAircraft] = useState(null); // State to store selected aircraft
-  // Function to fetch aircraft focus data
+  
   const fetchAircraftFocus = (icao24) => {
     setSelectedAircraft(icao24);
   };
@@ -54,10 +57,7 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
               styles: mapStyle, // Apply custom map style
             });
 
-            // Add event listeners for map events
-            // only need when map becomes idle (no more dragging or zooming)
-            // newMap.addListener('dragend', () => handleBoundsChange(newMap));
-            // newMap.addListener('zoom_changed', () => handleBoundsChange(newMap));
+            // Add event listener for bounds change
             newMap.addListener('idle', () => handleBoundsChange(newMap));
 
 
@@ -74,35 +74,44 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
     }
   }, [initialized]);
 
+
+  // Add interval to handle bounds change and fetch aircraft data
   useEffect(() => {
     const intervalId = setInterval(() => {
       if (map) {
         handleBoundsChange(map);
       }
-    }, 10000); // Run every 10 seconds
+    }, 10000);
   
     return () => {
       clearInterval(intervalId);
     };
   }, [map]);
   
-
+// Clear markers and render new markers when aircraftData changes
+// If a new aircraft is added, a new marker will be created.
+// This handles the event of creating a new marker when an aircraft flies into the bounds.
   useEffect(() => {
     if (initialized && map && aircraftData && aircraftData.length > 0) {
-      clearMarkers(); // Clear existing markers
-      renderAircraftMarkers(); // Render new markers
+      clearMarkers(); 
+      renderAircraftMarkers();
     }
   }, [aircraftData, initialized, map]);
 
 
-
+// Remove all markers from the map and clear the markers array.
+// Keeps markers from accumulating on the map when aircraftData changes, or bounds change.
   const clearMarkers = () => {
     markers.forEach(marker => {
-      marker.setMap(null); // Remove marker from the map
+      marker.setMap(null); 
     });
-    setMarkers([]); // Clear the markers array
+    setMarkers([]);
   };
 
+  // Create a new marker for each aircraft and add it to the map
+  // information such as latitude and longitude dictate the markers position on the map.
+  // trueTrack dictates the direction the icon will point.
+  // Call sign is the title of the marker.
   const renderAircraftMarkers = () => {
     const newMarkers = aircraftData.map(aircraft => {
       const { icao24, callsign, latitude, longitude, true_track } = aircraft;
@@ -112,15 +121,22 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
     setMarkers(newMarkers); // Set the new markers
   };
 
+  // Create a new marker on the map
   const createMarker = (position, icao24, callsign, trueTrack) => {
     if (!map) {
       console.error('Map not initialized yet');
       return null;
     }
   
-    let iconUrl = ''; // Initialize the icon URL
+    
   
     // Determine the icon URL based on the trueTrack value
+    // The icon will point in the direction of the trueTrack value
+    // Eight possible directions: Up, Up-Right, Right, Down-Right, Down, Down-Left, Left, Up-Left
+
+    let iconUrl = ''; 
+
+
     if (trueTrack >= 338 || trueTrack < 23) {
       iconUrl = upIcon; // Up
     } else if (trueTrack >= 23 && trueTrack < 68) {
@@ -139,12 +155,15 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
       iconUrl = upLeftIcon; // Up-Left
     }
   
+    // Create a new marker on the map
+    // use the icon URL based on the trueTrack value
+    // Add a click event listener to the marker to fetch aircraft focus data
     const marker = new window.google.maps.Marker({
       position: position,
       map: map,
       title: callsign,
       icon: {
-        url: iconUrl, // Use the determined icon URL
+        url: iconUrl, 
         scaledSize: new window.google.maps.Size(30, 30),
       },
       icao24: icao24,
@@ -154,6 +173,9 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
     });
     return marker;
   };
+
+  // Handle bounds change event
+  // This function gets the new bounds and updates the bounds state
 
   const handleBoundsChange = (map) => {
     const bounds = map.getBounds();
@@ -171,7 +193,7 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
       // Used to avoid bug with Google Maps API where lat and long of bounding box are the same
       if (ne.lat() === sw.lat() || ne.lng() === sw.lng()) {
         return;
-      } // Skip if bounds are invalid
+      } 
 
 
       onBoundsChange(boundsObject); // Communicate bounds change to parent component

@@ -13,6 +13,11 @@ function App() {
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
 
+
+  // check if the user is logged in when the app starts
+  // if the user is logged in, set the username and isLoggedIn state to true
+  // if the token is expired, remove the token from local storage
+  
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -25,8 +30,11 @@ function App() {
         setIsLoggedIn(true);
       }
     }
-  }, []); // Empty dependency array ensures the effect runs only once on component mount
-  
+  }, []); 
+
+  // functions to handle login and logout 
+  // these functions will be passed to the login and logout components
+
   const handleLogin = (username) => {
     setUsername(username);
     setIsLoggedIn(true);
@@ -38,6 +46,7 @@ function App() {
     setIsLoggedIn(false);
     navigate('/');
   };
+
 
   return (
     <div style={{ paddingTop: '20px' }}>

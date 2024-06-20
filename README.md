@@ -1,8 +1,9 @@
-# React + Vite
+User experience
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Flight Tracker is a live flight tracking web app that allows a user to view flights in real time imposed onto a Google map. The direction of the aircraft is demonstrated by the direction of the marker displayed. The location of the markers is updated every ten seconds to simulate a live radar situation.
 
-Currently, two official plugins are available:
+A user is able to click on any marker and thereby retrieve more information about an aircraft. A bottom drawer will slide up to display this information and a thumbnail photo of the aircraft if available.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+If the user is registered and logged in they will be able to click the "spotted" button in this component to save the selected aircraft to the database.
+
+The user can then navigate to their profile page where a table containing a list of "spotted" flights is kept. The table holds information available for those flights such as model of aircraft, origin country, call sign, and a thumbnail photograph. There is a delete button next to the row of each entry that a user can use to remove an aircraft.
