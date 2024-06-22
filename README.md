@@ -6,7 +6,8 @@
 ## Installation 
 
 
-``bash
+``bash  
+
 git clone https://github.com/tf292201/flighttracker-frontend.git  
 
 cd flighttracker-frontend  
