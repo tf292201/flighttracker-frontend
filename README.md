@@ -7,9 +7,12 @@
 
 
 ``bash
-git clone https://github.com/tf292201/flighttracker-frontend.git
-cd flighttracker-frontend
-npm install
+git clone https://github.com/tf292201/flighttracker-frontend.git  
+
+cd flighttracker-frontend  
+
+npm install  
+
 npm run dev
 
 ## Usage
