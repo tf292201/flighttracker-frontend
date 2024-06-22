@@ -3,6 +3,13 @@ import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
 import './Navbar.css';
 
+
+// Navbar component that displays the navigation links dynamically based on the user's authentication status
+// The component receives the following props:
+// - isLoggedIn: a boolean value that indicates whether the user is authenticated
+// - username: a string value that represents the username of the authenticated user
+// - onLogout: a function that handles the user logout action
+
 function Navbar({ isLoggedIn, username, onLogout, navigate }) {
   
   return (

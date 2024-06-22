@@ -14,7 +14,6 @@ function LogOut() {
   return (
     <div>
       <h2>Logging out...</h2>
-      {/* Optionally, you can display a message or loading indicator */}
     </div>
   );
 }

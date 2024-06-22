@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Box, TextField, Button, Typography } from '@mui/material';
 import ApiHelper from '../utils/api';
 
+
+
 function RegisterPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');

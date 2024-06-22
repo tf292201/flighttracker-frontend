@@ -41,7 +41,8 @@ function AircraftDetails({ icao24, onClose }) {
     }
   }, []);
 
-
+  // Sends a POST request to the server to save the spotted aircraft
+  //
 
   const handleSpotted = async () => {
     try {
