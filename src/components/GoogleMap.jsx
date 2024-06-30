@@ -13,6 +13,11 @@ import upLeftIcon from '../assets/up_left_icon.png';
 
 // Import custom map style
 import mapStyle from '../assets/mapStyle'; 
+import darkStyle from '../assets/darkStyle';
+
+// Import Time Utility
+import TimeUtility from '../utils/DarkMode';
+
 
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer'
@@ -54,7 +59,7 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
             const newMap = new window.google.maps.Map(mapRef.current, {
               center: { lat: latitude, lng: longitude },
               zoom: 10,
-              styles: mapStyle, // Apply custom map style
+              styles: TimeUtility.isNightTime() ? darkStyle : mapStyle,
             });
 
             // Add event listener for bounds change
@@ -73,6 +78,17 @@ function GoogleMap({ onBoundsChange, aircraftData }) {
       }
     }
   }, [initialized]);
+
+  useEffect(() => {
+    if (!map) return;
+  
+    const intervalId = setInterval(() => {
+      const newStyle = isNightTime() ? darkMapStyle : lightMapStyle;
+      map.setOptions({ styles: newStyle });
+    }, 60000); // Check every minute
+  
+    return () => clearInterval(intervalId);
+  }, [map]);
 
 
   // Add interval to handle bounds change and fetch aircraft data
